@@ -92,11 +92,11 @@
     }
 
     .preferred-plan {
-        background-color: #A8D5BA;
+        background-color: #f3faf2;
     }
 </style>
 
-<div class="plan premium best-value" style="@GetPlanBorderStyle()">
+<div class="@GetPlanClasses()" style="@GetPlanBorderStyle()">
     <SfTooltip Content="@TagLine">
         <h1><b>@Plan</b></h1>
     </SfTooltip>
@@ -113,6 +113,7 @@
                   Value="@quantity">
             <SliderEvents TValue="int" OnChange="OnChange"></SliderEvents>
         </SfSlider>
+        <p class="slider-caption">select a quantity</p>
     }
 
     <div class="benefits-container">

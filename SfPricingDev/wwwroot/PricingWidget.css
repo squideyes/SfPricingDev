@@ -2,23 +2,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: nowrap; /* Prevents wrapping by default */
+    flex-wrap: nowrap;
 }
-
     .pricing-widgets > * {
         width: 320px;
-        min-width: 320px; /* Ensures widgets do not shrink below 320px */
+        min-width: 320px;
         margin: 0 2px;
     }
 
-/* Media query for when the screen size is less than 960px */
 @media (max-width: 960px) {
     .pricing-widgets {
-        flex-direction: column; /* Stacks widgets vertically */
-        align-items: center; /* Centers widgets vertically */
+        flex-direction: column;
+        align-items: center;
     }
-
         .pricing-widgets > * {
-            margin: 2px 0; /* Adjusts margin for vertical stacking */
+            margin: 2px 0;
         }
+}
+
+.slider-caption {
+    margin-top: -14px; 
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
 }
