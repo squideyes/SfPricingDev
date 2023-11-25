@@ -12,6 +12,18 @@ public static class MiscExtenders
         string Pools,
         string Plural);
 
+    public static string ToTagLine(this Plan plan)
+    {
+        return plan switch
+        {
+            Free => "&quot;Kick The Tires&quot; (Prove to yourself that SquidFolio works).",
+            Lite => "Up your trading game while risking minimal capital.",
+            Flex => "Trade multiple EA pools to improve your profit potential.",
+            Elite => "Maximize Your Profit Potential",
+            _ => throw new ArgumentOutOfRangeException(nameof(plan))
+        };    
+    }
+
     public static List<Benefit> ToBenefits(this Plan plan, int maxLots)
     {
         var benefits = new List<Benefit>();
@@ -33,11 +45,11 @@ public static class MiscExtenders
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Market-Savvy Updates",
-            "SquidEyes believes in Science; Not Guesswork!"));
+            "Frequently updates keep SquidFolio in step with evolving market conditions."));
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Setup / Config Wizard",
-            "EA setup and configuration utility with step-by-step instructions and a video walkthrough."));
+            "EA setup and configuration utility; step-by-step guidance and a video walkthrough."));
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Email & Chat Support",
