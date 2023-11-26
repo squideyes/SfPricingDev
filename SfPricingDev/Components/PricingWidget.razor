@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.Popups;
 @using Syncfusion.Blazor.Inputs
 @using SfPricingDev.Models
+@using B = Syncfusion.Blazor.Buttons;
 
 <link rel="stylesheet" href="PricingWidget.css" />
 
@@ -17,14 +18,11 @@
     <div class="price">
         @if (Plan == Plan.Flex)
         {
-            <span>$@price</span>
-            <SfSwitch CssClass="monthly-yearly-switch"
-                @bind-Checked="isMonthly" ValueChange="Change"
-            TChecked="bool?" OnLabel="PER MONTH" OffLabel="PER YEAR" />
+            <span>$@price / @MonthOrYear()</span>
         }
         else
         {
-            <span>$@price MONTH</span>
+            <span>$@price / month</span>
         }
     </div>
 
@@ -34,7 +32,7 @@
                   Value="@quantity" CssClass="slider-margin-top">
             <SliderEvents TValue="int" OnChange="OnChange"></SliderEvents>
         </SfSlider>
-        <p class="slider-caption">select billing & quantity</p>
+        <p class="slider-caption">slide to select lots traded</p>
     }
 
     <div class="benefits-container">
@@ -46,13 +44,22 @@
                 </SfTooltip>
             </div>
         }
+        @if (Plan == Plan.Flex)
+        {
+            <br />
+            <div style="display: flex; align-items: center; justify-content: center;">
+                pre-pay & save 20%&nbsp;
+                <SfSwitch @bind-Checked="prePayAndSave"
+                          ValueChange="Change" TChecked="bool?" />
+            </div>
+        }
     </div>
     <br />
     <button>Choose Plan</button>
 </div>
 
 @code {
-    bool? isMonthly = true;
+    bool? prePayAndSave = false;
     int quantity = 1;
     double price;
     bool showSlider;
@@ -60,7 +67,7 @@
 
     protected override void OnInitialized()
     {
-        benefits = Plan.ToBenefits(quantity);
+        benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
         showSlider = Plan == Plan.Flex;
 
         UpdatePrice();
@@ -74,8 +81,8 @@
 
     void UpdatePrice()
     {
-        price = PricingHelper.GetPrice(Plan, 69.0, quantity,
-            isMonthly == true ? Billing.Month : Billing.Year, 20.0);
+        price = PricingHelper.GetPrice(Plan, quantity,
+            prePayAndSave == true ? Billing.Year : Billing.Month);
     }
 
     private string GetPlanBorderStyle()
@@ -101,11 +108,11 @@
 
         UpdatePrice();
 
-        benefits = Plan.ToBenefits(quantity);
+        benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
     }
 
-    private void Change(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool?> args)
-    {
+    private void Change(B.ChangeEventArgs<bool?> args) =>
         UpdatePrice();
-    }
+
+    private string MonthOrYear() => prePayAndSave == true ? "year" : "month";
 }

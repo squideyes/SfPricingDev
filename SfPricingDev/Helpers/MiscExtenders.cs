@@ -16,7 +16,7 @@ public static class MiscExtenders
     {
         return plan switch
         {
-            Free => "&quot;Kick The Tires&quot; (Prove to yourself that SquidFolio works).",
+            Free => "&quot;Kick The Tires&quot; (prove to yourself that SquidFolio works).",
             Lite => "Up your trading game while putting minimal capital at risk.",
             Flex => "Trade multiple EA pools to improve your profit potential.",
             Elite => "Maximize Your Profit Potential",
@@ -24,15 +24,16 @@ public static class MiscExtenders
         };    
     }
 
-    public static List<Benefit> ToBenefits(this Plan plan, int maxLots)
+    public static List<Benefit> ToBenefits(
+        this Plan plan, int quantity, bool prePayAndSave)
     {
         var benefits = new List<Benefit>();
 
         var info = plan switch
         {
             Free => new Info(Free, "5 Micro", "1", ""),
-            Lite => new Info(Lite, "0.5 Std.", "1", ""),
-            Flex => new Info(Flex, $"{maxLots} Std.", "2", "s"),
+            Lite => new Info(Lite, "50 Micro", "1", ""),
+            Flex => new Info(Flex, $"{quantity} Std.", "2", "s"),
             Elite => new Info(Elite, "25 Std.", "3+", "s"),
             _ => throw new ArgumentOutOfRangeException(nameof(plan))
         };
@@ -67,7 +68,9 @@ public static class MiscExtenders
             "Early-Access Program",
             "Get access to to our latest EAs and tunings; plus the ability to help shape SquidFolio's future."));
 
-        benefits.Add(Benefit.Create(id++, info.Plan == Elite ? Yes : No,
+        var canMeetFounders = info.Plan == Flex && prePayAndSave && quantity >= 5;
+
+        benefits.Add(Benefit.Create(id++, canMeetFounders ? Yes : No,
             "1:1 w/SquidEyes Team",
             "Meet 1:1 with the SquidEyes founders (via Zoom or in NYC.)"));
 

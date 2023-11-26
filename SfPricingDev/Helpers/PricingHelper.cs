@@ -4,42 +4,48 @@ namespace SfPricingDev;
 
 internal static class PricingHelper
 {
-    public static int GetPrice(Plan plan, double oneLotPrice, 
-        int quantity, Billing billing, double yearlyDiscount)
+    private const double ONE_LOT_PRICE = 69.0;
+    private const double MAX_MONTHLY_DISCOUNT = 0.15;
+    private const double YEARLY_DISCOUNT = 0.2;
+    private const double FREE_PRICE = 0.0;
+    private const double LITE_PRICE = 39.0;
+    private const double ELITE_PRICE = 9999.0;
+
+    public static double GetPrice(
+        Plan plan, int quantity, Billing billing)
     {
         if (plan == Plan.Free)
-            return 0;
+            return FREE_PRICE;
         else if (plan == Plan.Lite)
-            return 39;
+            return LITE_PRICE;
         else if (plan == Plan.Elite)
-            return 9999;
+            return ELITE_PRICE;
 
-        var price = CalcFlexPrice(oneLotPrice, quantity);
+        var price = CalcFlexPrice(quantity);
 
         if (billing == Billing.Month)
             return (int)Math.Round(price);
-        else
-            return (int)Math.Round(price - (price * yearlyDiscount));
+
+        price *= 12;
+
+        return (int)Math.Round(price - (price * YEARLY_DISCOUNT));
     }
 
-    private static double CalcFlexPrice(
-        double oneLotPrice, int quantity)
+    private static double CalcFlexPrice(int quantity)
     {
-        const double maxDiscountRate = 0.15;
-        
         double discountRate;
 
         if (quantity >= 10)
         {
-            discountRate = maxDiscountRate;
+            discountRate = MAX_MONTHLY_DISCOUNT;
         }
         else
         {
-            discountRate = maxDiscountRate
+            discountRate = MAX_MONTHLY_DISCOUNT
                 * Math.Pow((double)quantity / 10, 2);
         }
 
-        double totalCost = oneLotPrice * quantity;
+        double totalCost = ONE_LOT_PRICE * quantity;
 
         return totalCost * (1 - discountRate);
     }
