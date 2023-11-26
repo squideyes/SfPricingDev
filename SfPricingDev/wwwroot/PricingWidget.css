@@ -20,15 +20,8 @@
         }
 }
 
-.slider-margin-top {
-    margin-top: -30px;
-}
-
-.slider-caption {
-    margin-top: -46px; 
-    margin-bottom: 10px;
-    font-size: 14px;
-    text-align: center;
+.slider {
+    margin-top: -26px;
 }
 
 .pricing-plans {
@@ -59,21 +52,14 @@
     text-align: left;
 }
 
-.best-value {
-    border-color: #007bff;
-}
-
 .price {
     font-size: 30px;
     font-weight: bold;
     color: #333;
     margin-bottom: 12px;
 }
-.price-dropdown {
-    margin-top: -10px;
-}
 
-button {
+.choose-plan-button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -82,7 +68,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-    button:hover {
+    .choose-plan-button:hover {
         background-color: #0056b3;
     }
 
@@ -113,6 +99,6 @@ button {
     max-width: 290px;
 }
 
-.preferred-plan {
+.flex-plan {
     background-color: #f3faf2;
 }

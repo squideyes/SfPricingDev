@@ -1,4 +1,6 @@
-﻿@using SfPricingDev.Helpers;
+﻿@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@using SfPricingDev.Helpers;
 @using Syncfusion
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.DropDowns
@@ -6,33 +8,48 @@
 @using Syncfusion.Blazor.Popups;
 @using Syncfusion.Blazor.Inputs
 @using SfPricingDev.Models
+@using System.Text
 @using B = Syncfusion.Blazor.Buttons;
 
 <link rel="stylesheet" href="PricingWidget.css" />
+
+<script>
+    function invokeCheckout(quantity) {
+        var link = document.createElement('a');
+        link.href = "javascript:void(0)";
+        link.setAttribute('data-cb-type', 'checkout');
+        link.setAttribute('data-cb-item-0', 'Premium-USD-Monthly');
+        link.setAttribute('data-cb-item-0-quantity', quantity);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
 
 <div class="@GetPlanClasses()" style="@GetPlanBorderStyle()">
     <SfTooltip Content="@Plan.ToTagLine()">
         <h1><b>@Plan</b></h1>
     </SfTooltip>
 
-    <div class="price">
+    <div>
+        <span class="price">$@price</span>
         @if (Plan == Plan.Flex)
         {
-            <span>$@price / @MonthOrYear()</span>
+            <span> / @MonthOrYear()</span>
         }
         else
         {
-            <span>$@price / month</span>
+            <span> / month</span>
         }
     </div>
 
     @if (Plan == Plan.Flex)
     {
-        <SfSlider TValue="int" Width="200" Min="1" Max="10"
-                  Value="@quantity" CssClass="slider-margin-top">
+        <SfSlider TValue="int" Width="200" Min="1" Max="25"
+                  Value="@quantity" CssClass="slider">
             <SliderEvents TValue="int" OnChange="OnChange"></SliderEvents>
+            <p style="padding-top:24px;">slide to select max-lots</p>
         </SfSlider>
-        <p class="slider-caption">slide to select lots traded</p>
     }
 
     <div class="benefits-container">
@@ -50,17 +67,18 @@
             <div style="display: flex; align-items: center; justify-content: center;">
                 pre-pay & save 20%&nbsp;
                 <SfSwitch @bind-Checked="prePayAndSave"
-                          ValueChange="Change" TChecked="bool?" />
+                          ValueChange="OnChange" TChecked="bool?" />
             </div>
         }
     </div>
     <br />
-    <button>Choose Plan</button>
+    <button class="choose-plan-button" @onclick="InvokeCheckout">Choose Plan</button>
 </div>
 
 @code {
     bool? prePayAndSave = false;
     int quantity = 1;
+
     double price;
     bool showSlider;
     List<Benefit>? benefits;
@@ -75,9 +93,6 @@
 
     [Parameter]
     public Plan Plan { get; set; } = Plan.Free;
-
-    [Parameter]
-    public string? TagLine { get; set; }
 
     void UpdatePrice()
     {
@@ -94,10 +109,10 @@
 
     private string GetPlanClasses()
     {
-        var classes = "plan premium";
+        var classes = "plan";
 
         if (Plan == Plan.Flex)
-            classes += " preferred-plan";
+            classes += " flex-plan";
 
         return classes;
     }
@@ -111,8 +126,17 @@
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
     }
 
-    private void Change(B.ChangeEventArgs<bool?> args) =>
+    private void OnChange(B.ChangeEventArgs<bool?> args)
+    {
         UpdatePrice();
 
+        benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
+    }
+
     private string MonthOrYear() => prePayAndSave == true ? "year" : "month";
+
+    private async Task InvokeCheckout()
+    {
+        await JSRuntime.InvokeVoidAsync("invokeCheckout", quantity);
+    }
 }
