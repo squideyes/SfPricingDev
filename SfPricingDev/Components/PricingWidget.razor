@@ -1,6 +1,7 @@
 ﻿@using SfPricingDev.Helpers;
 @using Syncfusion
 @using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Lists;
 @using Syncfusion.Blazor.Popups;
 @using Syncfusion.Blazor.Inputs
@@ -14,9 +15,17 @@
     </SfTooltip>
 
     <div class="price">
-        $@price<span>
-            / month
-        </span>
+        @if (Plan == Plan.Flex)
+        {
+            <span>$@price</span>
+            <SfSwitch CssClass="monthly-yearly-switch"
+                @bind-Checked="isMonthly" ValueChange="Change"
+            TChecked="bool?" OnLabel="PER MONTH" OffLabel="PER YEAR" />
+        }
+        else
+        {
+            <span>$@price MONTH</span>
+        }
     </div>
 
     @if (Plan == Plan.Flex)
@@ -25,7 +34,7 @@
                   Value="@quantity" CssClass="slider-margin-top">
             <SliderEvents TValue="int" OnChange="OnChange"></SliderEvents>
         </SfSlider>
-        <p class="slider-caption">select a quantity</p>
+        <p class="slider-caption">select billing & quantity</p>
     }
 
     <div class="benefits-container">
@@ -43,7 +52,7 @@
 </div>
 
 @code {
-    bool isChecked = true;
+    bool? isMonthly = true;
     int quantity = 1;
     double price;
     bool showSlider;
@@ -61,15 +70,12 @@
     public Plan Plan { get; set; } = Plan.Free;
 
     [Parameter]
-    public Billing Billing { get; set; } = Billing.Monthly;
-
-    [Parameter]
     public string? TagLine { get; set; }
 
     void UpdatePrice()
     {
-        price = PricingHelper.GetPrice(
-            Plan, 69.0, quantity, Billing, 20.0);
+        price = PricingHelper.GetPrice(Plan, 69.0, quantity,
+            isMonthly == true ? Billing.Month : Billing.Year, 20.0);
     }
 
     private string GetPlanBorderStyle()
@@ -96,5 +102,10 @@
         UpdatePrice();
 
         benefits = Plan.ToBenefits(quantity);
+    }
+
+    private void Change(Syncfusion.Blazor.Buttons.ChangeEventArgs<bool?> args)
+    {
+        UpdatePrice();
     }
 }

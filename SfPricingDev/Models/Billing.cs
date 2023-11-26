@@ -2,6 +2,6 @@
 
 public enum Billing
 {
-    Monthly = 1,
-    Yearly
+    Month = 1,
+    Year
 }

@@ -69,10 +69,9 @@
     color: #333;
     margin-bottom: 12px;
 }
-    .price span {
-        font-size: 20px;
-        color: #666;
-    }
+.price-dropdown {
+    margin-top: -10px;
+}
 
 button {
     background-color: #007bff;
@@ -117,4 +116,8 @@ button {
 
 .preferred-plan {
     background-color: #f3faf2;
+}
+
+.monthly-yearly-switch {
+    min-width: 100px;
 }

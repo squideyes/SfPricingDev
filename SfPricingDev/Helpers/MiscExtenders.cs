@@ -17,7 +17,7 @@ public static class MiscExtenders
         return plan switch
         {
             Free => "&quot;Kick The Tires&quot; (Prove to yourself that SquidFolio works).",
-            Lite => "Up your trading game while risking minimal capital.",
+            Lite => "Up your trading game while putting minimal capital at risk.",
             Flex => "Trade multiple EA pools to improve your profit potential.",
             Elite => "Maximize Your Profit Potential",
             _ => throw new ArgumentOutOfRangeException(nameof(plan))
@@ -55,13 +55,13 @@ public static class MiscExtenders
             "Email & Chat Support",
             "For setup, configuration, account and operational questions, but NOT FOR TRADING ADVICE."));
 
+        benefits.Add(Benefit.Create(id++, info.Plan >= Lite ? Yes : No,
+            "Join Our Discord",
+            "Learn and grow as part of the SquidFolio community."));
+
         benefits.Add(Benefit.Create(id++, info.Plan >= Flex ? Yes : No,
             "Setup Help (via Zoom)",
             "1:1 support; via Zoom"));
-
-        benefits.Add(Benefit.Create(id++, info.Plan >= Flex ? Yes : No,
-            "Join Our Discord",
-            "Learn and grow as part of the SquidFolio community."));
 
         benefits.Add(Benefit.Create(id++, info.Plan >= Flex ? Yes : No,
             "Early-Access Program",

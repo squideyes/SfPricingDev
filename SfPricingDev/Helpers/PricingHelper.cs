@@ -16,7 +16,7 @@ internal static class PricingHelper
 
         var price = CalcFlexPrice(oneLotPrice, quantity);
 
-        if (billing == Billing.Monthly)
+        if (billing == Billing.Month)
             return (int)Math.Round(price);
         else
             return (int)Math.Round(price - (price * yearlyDiscount));
