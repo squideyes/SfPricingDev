@@ -1,4 +1,9 @@
-﻿using Syncfusion.Blazor;
+// ********************************************************
+// The use of this source code is licensed under the terms
+// of the MIT License (https://opensource.org/licenses/MIT)
+// ********************************************************
+
+using Syncfusion.Blazor;
 using Syncfusion.Licensing;
 using SfPricingDev.Components;
 
