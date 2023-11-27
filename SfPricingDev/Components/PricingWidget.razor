@@ -28,7 +28,7 @@
 
     @if (Plan == Plan.Flex)
     {
-        <SfSlider TValue="int" Width="200" Min="1" Max="10"
+        <SfSlider TValue="int" Width="200" Min="1" Max="25"
                   Value="@quantity" CssClass="slider-margin-top">
             <SliderEvents TValue="int" OnChange="OnChange"></SliderEvents>
         </SfSlider>
@@ -50,7 +50,7 @@
             <div style="display: flex; align-items: center; justify-content: center;">
                 pre-pay & save 20%&nbsp;
                 <SfSwitch @bind-Checked="prePayAndSave"
-                          ValueChange="Change" TChecked="bool?" />
+                          ValueChange="OnChange" TChecked="bool?" />
             </div>
         }
     </div>
@@ -68,6 +68,7 @@
     protected override void OnInitialized()
     {
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
+
         showSlider = Plan == Plan.Flex;
 
         UpdatePrice();
@@ -111,8 +112,12 @@
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
     }
 
-    private void Change(B.ChangeEventArgs<bool?> args) =>
+    private void OnChange(B.ChangeEventArgs<bool?> args)
+    {
         UpdatePrice();
+
+        benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
+    }
 
     private string MonthOrYear() => prePayAndSave == true ? "year" : "month";
 }

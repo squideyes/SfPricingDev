@@ -14,7 +14,6 @@ internal static class PricingHelper
     private const double YEARLY_DISCOUNT = 0.2;
     private const double FREE_PRICE = 0.0;
     private const double LITE_PRICE = 39.0;
-    private const double ELITE_PRICE = 9999.0;
 
     public static double GetPrice(
         Plan plan, int quantity, Billing billing)
@@ -23,8 +22,6 @@ internal static class PricingHelper
             return FREE_PRICE;
         else if (plan == Plan.Lite)
             return LITE_PRICE;
-        else if (plan == Plan.Elite)
-            return ELITE_PRICE;
 
         var price = CalcFlexPrice(quantity);
 
@@ -40,7 +37,7 @@ internal static class PricingHelper
     {
         double discountRate;
 
-        if (quantity >= 10)
+        if (quantity >= 25)
         {
             discountRate = MAX_MONTHLY_DISCOUNT;
         }
