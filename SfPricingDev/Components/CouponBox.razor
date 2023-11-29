@@ -18,6 +18,8 @@
         IsProcessing = false;
     }
 
+    private bool IsInputEmpty => string.IsNullOrWhiteSpace(CouponCode);
+
     private void ClearCouponCode()
     {
         CouponCode = "";
@@ -30,6 +32,8 @@
 
         if (!IsProcessing)
             ButtonLabel = "➡️"; // Reset to right arrow emoji if not processing
+
+        StateHasChanged(); // Invoke re-rendering
     }
 }
 
@@ -42,12 +46,12 @@
                placeholder="Apply Coupon"
                readonly="@IsProcessing" />
         <button @onclick="ClearCouponCode"
-                disabled="@IsProcessing"
+                disabled="@IsInputEmpty"
                 class="clear-button">
             ❌
         </button>
         <button @onclick="ValidateCouponCodeAsync"
-                disabled="@IsProcessing"
+                disabled="@IsInputEmpty"
                 class="validate-button">
             @ButtonLabel
         </button>
@@ -90,9 +94,28 @@
         margin: 0; /* No margin for buttons */
         padding: 0; /* No padding for buttons */
         font-size: 20px; /* Adjust size as needed */
+        cursor: pointer;
     }
 
-    button:disabled {
-        color: #ccc;
+    /* Ensure that all child elements of the button inherit the color */
+    button * {
+        color: inherit;
+    }
+
+    /* Overriding hover effect for disabled buttons */
+    button:disabled, button:disabled:hover {
+        color: inherit; /* Ensure emojis inherit the color of the button */
+        background-color: #f0f0f0; /* Light gray background for disabled buttons */
+        cursor: default; /* Non-interactive cursor for disabled buttons */
+    }
+
+    /* Additional specific selector for hover effect to prevent blue color */
+    .clear-button:hover, .validate-button:hover {
+        background-color: transparent; /* Maintains the background on hover */
+    }
+
+    /* Even more specific selector for disabled buttons on hover */
+    .clear-button:disabled:hover, .validate-button:disabled:hover {
+        background-color: #f0f0f0; /* Keeps the background color consistent for disabled buttons */
     }
 </style>
