@@ -1,0 +1,98 @@
+﻿@code {
+    private string CouponCode { get; set; } = "";
+    private string ButtonLabel { get; set; } = "➡️"; // Right arrow emoji
+    private bool IsProcessing { get; set; } = false;
+
+    private async Task ValidateCouponCodeAsync()
+    {
+        if (string.IsNullOrWhiteSpace(CouponCode))
+            return;
+
+        IsProcessing = true;
+        ButtonLabel = "⏳"; // Waiting icon
+        await Task.Delay(2000); // Simulate API call delay
+
+        // Simulate random coupon validation result
+        ButtonLabel = new Random().Next(2) == 0 ? "✅" : "🚫";
+
+        IsProcessing = false;
+    }
+
+    private void ClearCouponCode()
+    {
+        CouponCode = "";
+        ButtonLabel = "➡️"; // Reset to right arrow emoji
+    }
+
+    private void OnInputChanged(ChangeEventArgs e)
+    {
+        CouponCode = e.Value?.ToString() ?? "";
+
+        if (!IsProcessing)
+            ButtonLabel = "➡️"; // Reset to right arrow emoji if not processing
+    }
+}
+
+<div class="coupon-input-container">
+    <div class="input-wrapper">
+        <span class="coupon-label">🏷️</span>
+        <input type="text"
+               value="@CouponCode"
+               @oninput="OnInputChanged"
+               placeholder="Apply Coupon"
+               readonly="@IsProcessing" />
+        <button @onclick="ClearCouponCode"
+                disabled="@IsProcessing"
+                class="clear-button">
+            ❌
+        </button>
+        <button @onclick="ValidateCouponCodeAsync"
+                disabled="@IsProcessing"
+                class="validate-button">
+            @ButtonLabel
+        </button>
+    </div>
+</div>
+
+<style>
+    .coupon-input-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .input-wrapper {
+        display: flex;
+        align-items: center;
+        border: 2px solid #ccc;
+        border-radius: 4px; /* Optional: rounded corners */
+    }
+
+    .coupon-label {
+        margin: 0;
+        font-size: 20px; /* Adjust size as needed */
+    }
+
+    input {
+        flex-grow: 1;
+        border: none;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+        input:focus {
+            outline: none; /* Optional: remove focus outline */
+        }
+
+    .clear-button, .validate-button {
+        background: none;
+        border: none; /* No border for buttons */
+        cursor: pointer;
+        margin: 0; /* No margin for buttons */
+        padding: 0; /* No padding for buttons */
+        font-size: 20px; /* Adjust size as needed */
+    }
+
+    button:disabled {
+        color: #ccc;
+    }
+</style>

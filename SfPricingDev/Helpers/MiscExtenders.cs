@@ -52,8 +52,8 @@ public static class MiscExtenders
         int id = 0;
 
         benefits.Add(Benefit.Create(id++, Yes,
-            $"<b>{info.MaxLots} Lots</b> (<b>{info.Pools} Pool{info.Plural}</b>)",
-            "The maximum number of forex lots that can be traded across all EAs and pools at once."));
+            $"<b>{info.MaxLots} Lots</b> / <b>{info.Pools} Pool{info.Plural}</b>",
+            "The maximum number of lots that can be traded across all EAs and pools at once."));
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Market-Savvy Updates",
@@ -65,7 +65,7 @@ public static class MiscExtenders
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Email & Chat Support",
-            "For setup, configuration, account and operational questions, but NOT FOR TRADING ADVICE."));
+            "For account, setup, config and operational questions, but NOT FOR TRADING ADVICE."));
 
         benefits.Add(Benefit.Create(id++, info.Plan >= Lite ? Yes : No,
             "Join Our Discord",
@@ -77,7 +77,7 @@ public static class MiscExtenders
 
         benefits.Add(Benefit.Create(id++, info.Plan >= Flex ? Yes : No,
             "Early-Access Program",
-            "Get access to to our latest EAs and tunings; plus the ability to help shape SquidFolio's future."));
+            "Get access to to our latest EAs and settings; plus the ability to help shape SquidFolio's future."));
 
         var canMeetFounders = info.Plan == Flex 
             && ((prePayAndSave && quantity >= 5) || quantity >= 10);

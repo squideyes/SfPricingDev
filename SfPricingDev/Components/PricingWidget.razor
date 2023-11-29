@@ -47,10 +47,13 @@
         @if (Plan == Plan.Flex)
         {
             <br />
-            <div style="display: flex; align-items: center; justify-content: center;">
-                pre-pay & save 20%&nbsp;
-                <SfSwitch @bind-Checked="prePayAndSave"
-                          ValueChange="OnChange" TChecked="bool?" />
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <CouponBox/>
+                <div style="margin-top: 4px; display: flex; align-items: center; justify-content: center;">
+                    Pay Yearly & Save 20%&nbsp;
+                    <SfSwitch @bind-Checked="prePayAndSave"
+                              ValueChange="OnChange" TChecked="bool?" />
+                </div>
             </div>
         }
     </div>
@@ -82,7 +85,7 @@
 
     void UpdatePrice()
     {
-        price = PricingHelper.GetPrice(Plan, quantity,
+        price = Pricing.GetPrice(Plan, quantity,
             prePayAndSave == true ? Billing.Year : Billing.Month);
     }
 

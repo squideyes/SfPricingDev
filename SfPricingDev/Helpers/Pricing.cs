@@ -4,11 +4,13 @@
 // ********************************************************
 
 using SfPricingDev.Models;
+using SquidEyes.Fundamentals;
 
 namespace SfPricingDev;
 
-internal static class PricingHelper
+internal class Pricing
 {
+    private const int MAX_QUANTITY = 25;
     private const double ONE_LOT_PRICE = 69.0;
     private const double MAX_MONTHLY_DISCOUNT = 0.15;
     private const double YEARLY_DISCOUNT = 0.2;
@@ -18,6 +20,9 @@ internal static class PricingHelper
     public static double GetPrice(
         Plan plan, int quantity, Billing billing)
     {
+        plan.MustBe().EnumValue();
+        quantity.MustBe().Between(1, MAX_QUANTITY);
+
         if (plan == Plan.Free)
             return FREE_PRICE;
         else if (plan == Plan.Lite)
@@ -37,14 +42,14 @@ internal static class PricingHelper
     {
         double discountRate;
 
-        if (quantity >= 25)
+        if (quantity == MAX_QUANTITY)
         {
             discountRate = MAX_MONTHLY_DISCOUNT;
         }
         else
         {
             discountRate = MAX_MONTHLY_DISCOUNT
-                * Math.Pow((double)quantity / 10, 2);
+                * Math.Pow((double)quantity / MAX_QUANTITY, 2);
         }
 
         double totalCost = ONE_LOT_PRICE * quantity;
