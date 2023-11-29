@@ -3,6 +3,8 @@
     private string actionLabel { get; set; } = "➡️";
     private bool processing { get; set; } = false;
 
+    event EventHandler? OnCoupon;
+
     private async Task ValidateCouponAsync()
     {
         if (string.IsNullOrWhiteSpace(coupon))
@@ -24,6 +26,7 @@
     {
         if (processing)
             return;
+
         coupon = "";
         actionLabel = "➡️"; 
     }
@@ -76,7 +79,7 @@
                @oninput="OnInputChanged"
                onpaste="handlePaste(event)"
                onkeypress="validateInput(event)"
-               placeholder="Apply Coupon"
+               placeholder="Coupon Goes Here"
                readonly="@processing" />
         <button @onclick="ClearCoupon"
                 title="Clear"
