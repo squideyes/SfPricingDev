@@ -48,12 +48,12 @@
         <button @onclick="ClearCouponCode"
                 disabled="@IsInputEmpty"
                 class="clear-button">
-            <span class="button-content">❌</span>
+            ❌
         </button>
         <button @onclick="ValidateCouponCodeAsync"
                 disabled="@IsInputEmpty"
                 class="validate-button">
-            <span class="button-content">@ButtonLabel</span>
+            @ButtonLabel
         </button>
 
     </div>
@@ -118,14 +118,5 @@
     /* Even more specific selector for disabled buttons on hover */
     .clear-button:disabled:hover, .validate-button:disabled:hover {
         background-color: #f0f0f0; /* Keeps the background color consistent for disabled buttons */
-    }
-
-    .button-content {
-        color: inherit; /* Ensure content color matches the button */
-    }
-
-    /* Specific styles for button content when the button is disabled */
-    button:disabled .button-content {
-        color: #ccc; /* Gray out the content */
     }
 </style>
