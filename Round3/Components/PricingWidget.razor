@@ -1,5 +1,6 @@
 ﻿@using Round3.Helpers;
 @using Syncfusion
+@using System.Text
 @using Round3.Models
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Popups;
@@ -101,6 +102,7 @@
         align-items: center;
         justify-content: center;
     }
+
     .plan-name {
         font-size: 50px;
         font-weight: bold;
@@ -118,26 +120,22 @@
         <span class="plan-name">@Plan</span>
     </SfTooltip>
 
-    <div class="price">
-        @if (Plan == Plan.Flex)
-        {
-            <span>$@price / @MonthOrYear()</span>
-        }
-        else
-        {
-            <span>$@price / month</span>
-        }
-    </div>
+    @if (Plan == Plan.Flex)
+    {
+        <div class="price">
+            <span>@GetPriceAndBilling()</span>
+        </div>
+    }
 
     @if (Plan == Plan.Flex)
     {
-        <SfSlider TValue="int" 
-            Width="200" 
-            Min="1"
-            Max="25" 
-            Value="@quantity">
-            <SliderEvents TValue="int" 
-                OnChange="OnChange" />
+        <SfSlider TValue="int"
+                  Width="200"
+                  Min="1"
+                  Max="25"
+                  Value="@quantity">
+            <SliderEvents TValue="int"
+                          OnChange="OnChange" />
         </SfSlider>
         <p class="slider-caption">slide to select lots traded</p>
     }
@@ -153,17 +151,16 @@
         }
     </ul>
 
-    <div style="margin: -10px 5px 0px 5px;">
+    <div style="margin: -6px 5px 0px 5px;">
         <CouponBox />
     </div>
 
     <div class="pay-yearly-and-save">
         Pay Yearly; Save 20%&nbsp;
-        <SfSwitch 
-            CssClass="e-small" 
-            @bind-Checked="prePayAndSave" 
-            ValueChange="OnChange" 
-            TChecked="bool?" />
+        <SfSwitch CssClass="e-small"
+                  @bind-Checked="prePayAndSave"
+                  ValueChange="OnChange"
+                  TChecked="bool?" />
     </div>
 
     <br />
@@ -217,12 +214,24 @@
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
     }
 
+    private string GetPriceAndBilling()
+    {
+        var sb = new StringBuilder();
+
+        sb.Append($"${price} / ");
+
+        if (Plan == Plan.Flex)
+            sb.Append(prePayAndSave == true ? "year" : "month");
+        else
+            sb.Append("month");
+
+        return sb.ToString();
+    }
+
     private void OnChange(B.ChangeEventArgs<bool?> args)
     {
         UpdatePrice();
 
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
     }
-
-    private string MonthOrYear() => prePayAndSave == true ? "year" : "month";
 }
