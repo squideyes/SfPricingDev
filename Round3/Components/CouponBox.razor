@@ -28,6 +28,12 @@
         cursor: pointer;
         user-select: none; /* Prevents text selection */
     }
+
+        .coupon-button.disabled {
+            opacity: 0.5; /* Makes the button look faded or grayed out */
+            cursor: not-allowed; /* Changes the cursor to indicate the button is not clickable */
+            pointer-events: none; /* Prevents any mouse events on this element */
+        }
 </style>
 
 <div class="coupon-box">
@@ -40,17 +46,12 @@
            onpaste="handlePaste(event)"
            onkeypress="validateInput(event)"
            placeholder="Coupon (Optional)" />
-    <span class="coupon-button"
+    <span @attributes="GetClearButtonAttributes()"
           @onclick="ClearCoupon"
-          title="Clear"
-          disabled="@IsInputEmpty">
-        ❌
-    </span>
-    <span class="coupon-button" @onclick="ValidateCouponAsync"
-          title="Apply"
-          disabled="@IsInputEmpty">
-        @actionLabel
-    </span>
+          title="Clear">❌</span>
+    <span @attributes="GetApplyButtonAttributes()"
+          @onclick="ValidateCouponAsync"
+          title="Apply">@actionLabel</span>
 </div>
 
 <script>
@@ -123,4 +124,31 @@
 
         StateHasChanged();
     }
+
+    @code {
+        private Dictionary<string, object> GetClearButtonAttributes()
+        {
+            var attributes = new Dictionary<string, object>();
+
+            if (IsInputEmpty || processing)
+                attributes.Add("class", "coupon-button disabled");
+            else
+                attributes.Add("class", "coupon-button");
+
+            return attributes;
+        }
+
+        private Dictionary<string, object> GetApplyButtonAttributes()
+        {
+            var attributes = new Dictionary<string, object>();
+
+            if (IsInputEmpty)
+                attributes.Add("class", "coupon-button disabled");
+            else
+                attributes.Add("class", "coupon-button");
+
+            return attributes;
+        }
+    }
+
 }
