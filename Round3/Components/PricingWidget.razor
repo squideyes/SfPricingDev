@@ -1,0 +1,132 @@
+﻿@using Round3.Helpers;
+@using Syncfusion
+@using Syncfusion.Blazor.Popups;
+@using Round3.Models
+
+<style>
+    .plan-panel {
+        font-family: Arial, sans-serif;
+        width: 300px;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .benefits-list {
+        list-style-type: none;
+        padding-left: 0;
+        display: inline-block;
+        text-align: left;
+        max-width: 100%;
+    }
+
+    .benefit,
+    .benefit * {
+        font-size: 20px;
+        text-align: left;
+    }
+
+    .best-value {
+        border-color: #007bff;
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    .e-tooltip-wrap.e-popup {
+        background-color: #fff;
+        border: 2px solid #000;
+        background: black;
+    }
+
+    .e-tooltip-wrap .e-tip-content {
+        color: white;
+        text-align: center;
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    .e-tooltip-wrap .e-arrow-tip-inner.e-tip-bottom {
+        color: black;
+    }
+
+    .e-tooltip-wrap .e-arrow-tip-outer.e-tip-bottom {
+        border-left: 12px solid transparent;
+        border-right: 14px solid transparent;
+        border-top: 12px solid black;
+    }
+
+    .e-tooltip-wrap {
+        max-width: 290px;
+    }
+
+    .flex-plan {
+        border: 5px solid #ccc;
+        background-color: #f3faf2;
+    }
+
+    .non-flex-plan {
+        border: 2px solid #ccc;
+    }
+</style>
+
+<div class="@GetPlanPanelClasses()">
+    <SfTooltip Content="@Plan.ToTagLine()">
+        <h1><b>@Plan</b></h1>
+    </SfTooltip>
+
+    <ul class="benefits-list">
+        @foreach (var benefit in benefits!)
+        {
+            <li class="benefit">
+                <SfTooltip Content="@benefit.Tooltip">
+                    @benefit.GetFragment()
+                </SfTooltip>
+            </li>
+        }
+    </ul>
+    <button>Choose Plan</button>
+</div>
+
+@code {
+    bool? prePayAndSave = false;
+    int quantity = 1;
+    List<Benefit>? benefits;
+
+    protected override void OnInitialized()
+    {
+        benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
+    }
+
+    [Parameter]
+    public Plan Plan { get; set; } = Plan.Free;
+
+    [Parameter]
+    public string? TagLine { get; set; }
+
+    private string GetPlanPanelClasses()
+    {
+        var classes = "plan-panel";
+
+        if (Plan == Plan.Flex)
+            classes += " flex-plan";
+        else
+            classes += " non-flex-plan";
+
+        return classes;
+    }
+}

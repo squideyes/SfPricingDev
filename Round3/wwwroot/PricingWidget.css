@@ -1,0 +1,118 @@
+﻿.pricing-widgets {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+    .pricing-widgets > * {
+        width: 320px;
+        min-width: 320px;
+        margin: 0 2px;
+    }
+
+@media (max-width: 960px) {
+    .pricing-widgets {
+        flex-direction: column;
+        align-items: center;
+    }
+        .pricing-widgets > * {
+            margin: 2px 0;
+        }
+}
+
+.slider-margin-top {
+    margin-top: -30px;
+}
+
+.slider-caption {
+    margin-top: -46px; 
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.pricing-plans {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.plan {
+    width: 320px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.benefits-container {
+    display: inline-block;
+    text-align: left;
+    max-width: 100%;
+}
+
+.benefit,
+.benefit * {
+    font-size: 22px;
+    text-align: left;
+}
+
+.best-value {
+    border-color: #007bff;
+}
+
+.price {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+}
+.price-dropdown {
+    margin-top: -10px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer;
+}
+    button:hover {
+        background-color: #0056b3;
+    }
+
+.e-tooltip-wrap.e-popup {
+    background-color: #fff;
+    border: 2px solid #000;
+    background: black;
+}
+
+.e-tooltip-wrap .e-tip-content {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.e-tooltip-wrap .e-arrow-tip-inner.e-tip-bottom {
+    color: black;
+}
+
+.e-tooltip-wrap .e-arrow-tip-outer.e-tip-bottom {
+    border-left: 12px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 12px solid black;
+}
+
+.e-tooltip-wrap {
+    max-width: 290px;
+}
+
+.preferred-plan {
+    background-color: #f3faf2;
+}
