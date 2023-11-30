@@ -1,0 +1,42 @@
+﻿<style>
+    .coupon-box {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        background-color: white; /* Set background color to white */
+        padding: 0 3px; /* Remove top and bottom padding */
+        box-sizing: border-box; /* Include padding and border in the width calculation */
+    }
+
+        .coupon-box span {
+            margin: 0; /* Minimal margin for glyphs */
+            white-space: nowrap;
+        }
+
+        .coupon-box input[type="text"] {
+            flex-grow: 1;
+            font-size: 14px;
+            width: calc(100% - 40px); /* Adjusts width dynamically, accounting for glyphs and some padding */
+            border: none; /* Remove input field border */
+            outline: none; /* Remove focus outline */
+            margin: 0; /* Remove margins */
+            padding: 2px 3px; /* Minimal padding */
+            background-color: transparent; /* Background color transparent */
+        }
+</style>
+
+<div class="coupon-box">
+    <span>🏷️</span>
+    <input type="text"
+           placeholder="Coupon" />
+    <span>
+        ❌
+    </span>
+    <span>
+        @actionLabel
+    </span>
+</div>
+
+@code {
+    private string actionLabel { get; set; } = "➡️";
+}
