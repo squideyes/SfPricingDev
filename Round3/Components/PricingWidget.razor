@@ -151,19 +151,24 @@
         }
     </ul>
 
-    <div style="margin: -6px 5px 0px 5px;">
-        <CouponBox />
-    </div>
+    @if (Plan == Plan.Flex)
+    {
+        <div style="margin: -6px 5px 0px 5px;">
+            <SfTooltip Content="Click ➡️ to validate<br/>and apply the coupon.">
+                <CouponBox />
+            </SfTooltip>
+        </div>
 
-    <div class="pay-yearly-and-save">
-        Pay Yearly; Save 20%&nbsp;
-        <SfSwitch CssClass="e-small"
-                  @bind-Checked="prePayAndSave"
-                  ValueChange="OnChange"
-                  TChecked="bool?" />
-    </div>
+        <div class="pay-yearly-and-save">
+            Pay Yearly; Save 20%&nbsp;
+            <SfSwitch CssClass="e-small"
+                      @bind-Checked="prePayAndSave"
+                      ValueChange="OnChange"
+                      TChecked="bool?" />
+        </div>
 
-    <br />
+        <br />
+    }
 
     <button>Choose Plan</button>
 </div>
@@ -183,9 +188,6 @@
 
     [Parameter]
     public Plan Plan { get; set; } = Plan.Free;
-
-    [Parameter]
-    public string? TagLine { get; set; }
 
     private string GetPlanPanelClasses()
     {

@@ -53,15 +53,15 @@ public static class MiscExtenders
 
         benefits.Add(Benefit.Create(id++, Yes,
             $"<b>{info.MaxLots} Lots</b> / <b>{info.Pools} Pool{info.Plural}</b>",
-            "The maximum number of lots that can be traded across all EAs and pools at once."));
+            "Maximum number of lots<br/>that can be traded across all EAs and pools at once."));
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Market-Savvy Updates",
-            "Frequently updates keep SquidFolio in step with evolving market conditions."));
+            "Frequent updates keep SquidFolio in step with evolving market conditions."));
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Setup / Config Wizard",
-            "EA setup and configuration utility; step-by-step guidance and a video walkthrough."));
+            "EA setup and configuration utility, step-by-step guidance and a video walkthrough."));
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Email & Chat Support",

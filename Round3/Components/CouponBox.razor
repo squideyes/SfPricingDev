@@ -1,5 +1,6 @@
 ﻿<style>
     .coupon-box {
+        position: relative;
         display: flex;
         align-items: center;
         border: 1px solid #ccc;
@@ -34,26 +35,9 @@
             cursor: not-allowed; /* Changes the cursor to indicate the button is not clickable */
             pointer-events: none; /* Prevents any mouse events on this element */
         }
-
-    .hot-banner {
-        position: absolute; /* Positions it relative to the coupon-box */
-        top: 0;
-        right: 0;
-        background-color: red; /* Red background for visibility */
-        color: white; /* White text color */
-        padding: 5px; /* Some padding around the text */
-        transform: rotate(45deg); /* Tilts the banner */
-        transform-origin: top right; /* Ensures the rotation is around the top right corner */
-        font-weight: bold; /* Makes the text bold */
-        z-index: 10; /* Ensures it's above other content */
-    }
 </style>
 
 <div class="coupon-box">
-    @if (ShowHotBanner)
-    {
-        <div class="hot-banner">🔥 HOT</div>
-    }
     <span>🏷️</span>
     <input type="text"
            id="couponBox"
@@ -103,22 +87,18 @@
     private string coupon { get; set; } = "";
     private string actionLabel { get; set; } = "➡️";
     private bool processing { get; set; } = false;
-    private bool isButtonClicked { get; set; } = false; // New property to track button click
-
-    event EventHandler? OnCoupon;
-
-    private bool ShowHotBanner { get; set; } = true; // Set this based on your conditions
+    private bool buttonWasClicked { get; set; } = false; 
 
     private async Task ValidateCouponAsync()
     {
-        if (string.IsNullOrWhiteSpace(coupon) || isButtonClicked)
+        if (string.IsNullOrWhiteSpace(coupon) || buttonWasClicked)
             return;
 
-        isButtonClicked = true; // Set to true when button clicked
+        buttonWasClicked = true;
         processing = true;
         actionLabel = "⏳";
 
-        await Task.Delay(2000);
+        await Task.Delay(5000);
 
         actionLabel = new Random().Next(2) == 0 ? "✅" : "🚫";
 
@@ -135,7 +115,7 @@
         coupon = "";
         actionLabel = "➡️";
         processing = false;
-        isButtonClicked = false; // Reset when coupon cleared
+        buttonWasClicked = false; 
     }
 
     private void OnInputChanged(ChangeEventArgs e)
@@ -165,7 +145,7 @@
         {
             var attributes = new Dictionary<string, object>();
 
-            if (IsInputEmpty || isButtonClicked) // Add check for isButtonClicked
+            if (IsInputEmpty || buttonWasClicked)
                 attributes.Add("class", "coupon-button disabled");
             else
                 attributes.Add("class", "coupon-button");
