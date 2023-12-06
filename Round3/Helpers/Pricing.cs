@@ -11,11 +11,10 @@ namespace Round3.Helpers;
 internal class Pricing
 {
     private const int MAX_QUANTITY = 25;
-    private const double ONE_LOT_PRICE = 69.0;
-    private const double MAX_MONTHLY_DISCOUNT = 0.15;
-    private const double YEARLY_DISCOUNT = 0.2;
+    private const double PRICE_PER_LOT = 49.0;
+    private const double DISCOUNT = 0.2;
     private const double FREE_PRICE = 0.0;
-    private const double LITE_PRICE = 39.0;
+    private const double LITE_PRICE = 29.0;
 
     public static double GetPrice(
         Plan plan, int quantity, Billing billing)
@@ -28,32 +27,13 @@ internal class Pricing
         else if (plan == Plan.Lite)
             return LITE_PRICE;
 
-        var price = CalcFlexPrice(quantity);
+        var price = PRICE_PER_LOT * quantity;
 
         if (billing == Billing.Month)
             return (int)Math.Round(price);
 
         price *= 12;
 
-        return (int)Math.Round(price - (price * YEARLY_DISCOUNT));
-    }
-
-    private static double CalcFlexPrice(int quantity)
-    {
-        double discountRate;
-
-        if (quantity == MAX_QUANTITY)
-        {
-            discountRate = MAX_MONTHLY_DISCOUNT;
-        }
-        else
-        {
-            discountRate = MAX_MONTHLY_DISCOUNT
-                * Math.Pow((double)quantity / MAX_QUANTITY, 2);
-        }
-
-        double totalCost = ONE_LOT_PRICE * quantity;
-
-        return totalCost * (1 - discountRate);
+        return (int)Math.Round(price * (1 - DISCOUNT));
     }
 }

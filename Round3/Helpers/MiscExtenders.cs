@@ -52,8 +52,8 @@ public static class MiscExtenders
         int id = 0;
 
         benefits.Add(Benefit.Create(id++, Yes,
-            $"<b>{info.MaxLots} Lots</b> / <b>{info.Pools} Pool{info.Plural}</b>",
-            "Maximum number of lots<br/>that can be traded across all EAs and pools at once."));
+            $"<b>{info.MaxLots} Lots</b> / <b>{info.Pools} MT4{info.Plural}</b>",
+            "Maximum number of lots<br/>that can be traded at once."));
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Market-Savvy Updates",
