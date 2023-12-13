@@ -9,7 +9,7 @@ using static Round3.Models.Plan;
 
 namespace Round3.Helpers;
 
-public static class MiscExtenders
+public static class BenefitsExtenders
 {
     public static string ToTagLine(this Plan plan)
     {
