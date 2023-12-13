@@ -7,113 +7,7 @@
 @using Syncfusion.Blazor.Inputs
 @using B = Syncfusion.Blazor.Buttons;
 
-<style>
-    .plan-panel {
-        font-family: Arial, sans-serif;
-        width: 300px;
-        padding: 25px;
-        border-radius: 10px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .benefits-list {
-        align-items: flex-start;
-        list-style-type: none;
-        padding-left: 0;
-        display: inline-block;
-        text-align: left;
-        max-width: 100%;
-    }
-
-    .benefit,
-    .benefit * {
-        font-size: 20px;
-        text-align: left;
-    }
-
-    .best-value {
-        border-color: #007bff;
-    }
-
-    .price {
-        font-size: 24px;
-        font-weight: bold;
-        color: #333;
-        margin-top: -6px;
-    }
-
-    button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        text-transform: uppercase;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-    .e-tooltip-wrap.e-popup {
-        background-color: #fff;
-        border: 2px solid #000;
-        background: black;
-    }
-
-    .e-tooltip-wrap .e-tip-content {
-        color: white;
-        text-align: center;
-        font-size: 18px;
-        line-height: 24px;
-    }
-
-    .e-tooltip-wrap .e-arrow-tip-inner.e-tip-bottom {
-        color: black;
-    }
-
-    .e-tooltip-wrap .e-arrow-tip-outer.e-tip-bottom {
-        border-left: 12px solid transparent;
-        border-right: 14px solid transparent;
-        border-top: 12px solid black;
-    }
-
-    .e-tooltip-wrap {
-        max-width: 280px;
-    }
-
-    .flex-plan {
-        border: 5px solid #ccc;
-        background-color: #f3faf2;
-    }
-
-    .non-flex-plan {
-        border: 2px solid #ccc;
-    }
-
-    .pay-yearly-and-save {
-        font-size: 14px;
-        margin-top: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .plan-name {
-        font-size: 50px;
-        font-weight: bold;
-    }
-
-    .slider-caption {
-        margin-top: -46px;
-        font-size: 14px;
-        text-align: center;
-    }
-</style>
+<link rel="stylesheet" href="SfPricing.css" />
 
 <div class="@GetPlanPanelClasses()">
     <SfTooltip Content="@Plan.ToTagLine()">
@@ -152,7 +46,7 @@
     {
         <div style="margin: -6px 5px 0px 5px;">
             <SfTooltip Content="Click ➡️ to validate<br/>and apply the coupon.">
-                <CouponBox />
+                <SfCouponBox />
             </SfTooltip>
         </div>
 
@@ -167,7 +61,7 @@
         <br />
     }
 
-    <button>Subscribe</button>
+    <button class="subscribe-button">Subscribe</button>
 </div>
 
 @code {

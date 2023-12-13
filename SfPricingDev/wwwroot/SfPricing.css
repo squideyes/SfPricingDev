@@ -1,0 +1,163 @@
+﻿.coupon-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: white; /* Set background color to white */
+    padding: 0 3px; /* Remove top and bottom padding */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+}
+
+    .coupon-box span {
+        margin: 0; /* Minimal margin for glyphs */
+        white-space: nowrap;
+    }
+
+    .coupon-box input[type="text"] {
+        flex-grow: 1;
+        font-size: 14px;
+        width: calc(100% - 40px); /* Adjusts width dynamically, accounting for glyphs and some padding */
+        border: none; /* Remove input field border */
+        outline: none; /* Remove focus outline */
+        margin: 0; /* Remove margins */
+        padding: 2px 3px; /* Minimal padding */
+        background-color: transparent; /* Background color transparent */
+    }
+
+.coupon-button {
+    cursor: pointer;
+    user-select: none; /* Prevents text selection */
+}
+
+    .coupon-button.disabled {
+        opacity: 0.5; /* Makes the button look faded or grayed out */
+        cursor: not-allowed; /* Changes the cursor to indicate the button is not clickable */
+        pointer-events: none; /* Prevents any mouse events on this element */
+    }
+
+.plan-panel {
+    font-family: Arial, sans-serif;
+    width: 300px;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.benefits-list {
+    align-items: flex-start;
+    list-style-type: none;
+    padding-left: 0;
+    display: inline-block;
+    text-align: left;
+    max-width: 100%;
+}
+
+.benefit,
+.benefit * {
+    font-size: 20px;
+    text-align: left;
+}
+
+.best-value {
+    border-color: #007bff;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-top: -6px;
+}
+
+.subscribe-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+    .subscribe-button:hover {
+        background-color: #0056b3;
+    }
+
+.e-tooltip-wrap.e-popup {
+    background-color: #fff;
+    border: 2px solid #000;
+    background: black;
+}
+
+.e-tooltip-wrap .e-tip-content {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.e-tooltip-wrap .e-arrow-tip-inner.e-tip-bottom {
+    color: black;
+}
+
+.e-tooltip-wrap .e-arrow-tip-outer.e-tip-bottom {
+    border-left: 12px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 12px solid black;
+}
+
+.e-tooltip-wrap {
+    max-width: 280px;
+}
+
+.flex-plan {
+    border: 5px solid #ccc;
+    background-color: #f3faf2;
+}
+
+.non-flex-plan {
+    border: 2px solid #ccc;
+}
+
+.pay-yearly-and-save {
+    font-size: 14px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plan-name {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.slider-caption {
+    margin-top: -46px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.plan-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+    .plan-container > div {
+        margin: 5px;
+    }
+
+@media (max-width: 768px) {
+    .plan-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

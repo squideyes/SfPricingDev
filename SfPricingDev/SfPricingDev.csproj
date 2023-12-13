@@ -4,6 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>a1b2cead-705f-461e-a90c-3ee3d5898066</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="SquidEyes.Fundamentals" Version="2.3.2" />
