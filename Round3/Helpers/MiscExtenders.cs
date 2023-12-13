@@ -11,12 +11,6 @@ namespace Round3.Helpers;
 
 public static class MiscExtenders
 {
-    private record struct Info(
-        Plan Plan,
-        string MaxLots,
-        string Pools,
-        string Plural);
-
     public static string ToTagLine(this Plan plan)
     {
         return plan switch
@@ -31,29 +25,37 @@ public static class MiscExtenders
     public static List<Benefit> ToBenefits(
         this Plan plan, int quantity, bool prePayAndSave)
     {
-        var benefits = new List<Benefit>();
-
-        var flexPools = quantity switch
+        var maxLots = plan switch
         {
-            <= 5 => 2,
-            <= 10 => 3,
-            <= 15 => 5,
-            _ => 5,
-        };
-
-        var info = plan switch
-        {
-            Free => new Info(Free, "5 Micro", "1", ""),
-            Lite => new Info(Lite, "50 Micro", "1", ""),
-            Flex => new Info(Flex, $"{quantity} Std.", flexPools.ToString(), "s"),
+            Free => "5 Micro",
+            Lite => "5 Mini",
+            Flex => $"{quantity} Std.",
             _ => throw new ArgumentOutOfRangeException(nameof(plan))
         };
+
+        var multi = plan == Flex && quantity >= 5;
+
+        var canMeetFounders = plan == Flex
+            && ((prePayAndSave && quantity >= 5) || quantity >= 10);
+
+        var benefits = new List<Benefit>();
 
         int id = 0;
 
         benefits.Add(Benefit.Create(id++, Yes,
-            $"<b>{info.MaxLots} Lots</b> / <b>{info.Pools} MT4{info.Plural}</b>",
-            "Maximum number of lots<br/>that can be traded at once."));
+            $"<b>{maxLots} Lots</b> (At Once)",
+            "Maximum number of lots<br/>that can be traded across all MT4 instances at once."));
+
+        if (multi)
+        {
+            benefits.Add(Benefit.Create(id++, Yes, $"Trade 2+ FX Accounts",
+                "Hedge across multiple FX accounts (without violating NFA Rule 2-43b)."));
+        }
+        else
+        {
+            benefits.Add(Benefit.Create(id++, Yes, $"Trade One FX Account",
+                "Trade one FX account,<br/>without hedging<br/>(per NFA Rule 2-43b)."));
+        }
 
         benefits.Add(Benefit.Create(id++, Yes,
             "Market-Savvy Updates",
@@ -67,20 +69,17 @@ public static class MiscExtenders
             "Email & Chat Support",
             "For account, setup, config and operational questions, but NOT FOR TRADING ADVICE."));
 
-        benefits.Add(Benefit.Create(id++, info.Plan >= Lite ? Yes : No,
+        benefits.Add(Benefit.Create(id++, plan >= Lite ? Yes : No,
             "Join Our Discord",
             "Learn and grow as part of the SquidFolio community."));
 
-        benefits.Add(Benefit.Create(id++, info.Plan >= Flex ? Yes : No,
+        benefits.Add(Benefit.Create(id++, plan >= Flex ? Yes : No,
             "Setup Help (via Zoom)",
             "1:1 support; via Zoom"));
 
-        benefits.Add(Benefit.Create(id++, info.Plan >= Flex ? Yes : No,
+        benefits.Add(Benefit.Create(id++, plan >= Flex ? Yes : No,
             "Early-Access Program",
             "Get access to to our latest EAs and settings; plus the ability to help shape SquidFolio's future."));
-
-        var canMeetFounders = info.Plan == Flex 
-            && ((prePayAndSave && quantity >= 5) || quantity >= 10);
 
         benefits.Add(Benefit.Create(id++, canMeetFounders ? Yes : No,
             "1:1 w/SquidEyes Team",
