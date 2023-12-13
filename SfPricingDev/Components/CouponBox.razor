@@ -1,46 +1,59 @@
-﻿@code {
-    private string coupon { get; set; } = "";
-    private string actionLabel { get; set; } = "➡️";
-    private bool processing { get; set; } = false;
-
-    event EventHandler? OnCoupon;
-
-    private async Task ValidateCouponAsync()
-    {
-        if (string.IsNullOrWhiteSpace(coupon))
-            return;
-
-        processing = true;
-        actionLabel = "⏳";
-
-        await Task.Delay(5000);
-
-        actionLabel = new Random().Next(2) == 0 ? "✅" : "🚫";
-
-        processing = false;
+﻿<style>
+    .coupon-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        background-color: white; /* Set background color to white */
+        padding: 0 3px; /* Remove top and bottom padding */
+        box-sizing: border-box; /* Include padding and border in the width calculation */
     }
 
-    private bool IsInputEmpty => string.IsNullOrWhiteSpace(coupon);
+        .coupon-box span {
+            margin: 0; /* Minimal margin for glyphs */
+            white-space: nowrap;
+        }
 
-    private void ClearCoupon()
-    {
-        if (processing)
-            return;
+        .coupon-box input[type="text"] {
+            flex-grow: 1;
+            font-size: 14px;
+            width: calc(100% - 40px); /* Adjusts width dynamically, accounting for glyphs and some padding */
+            border: none; /* Remove input field border */
+            outline: none; /* Remove focus outline */
+            margin: 0; /* Remove margins */
+            padding: 2px 3px; /* Minimal padding */
+            background-color: transparent; /* Background color transparent */
+        }
 
-        coupon = "";
-        actionLabel = "➡️"; 
+    .coupon-button {
+        cursor: pointer;
+        user-select: none; /* Prevents text selection */
     }
 
-    private void OnInputChanged(ChangeEventArgs e)
-    {
-        coupon = e.Value?.ToString() ?? "";
+        .coupon-button.disabled {
+            opacity: 0.5; /* Makes the button look faded or grayed out */
+            cursor: not-allowed; /* Changes the cursor to indicate the button is not clickable */
+            pointer-events: none; /* Prevents any mouse events on this element */
+        }
+</style>
 
-        if (!processing)
-            actionLabel = "➡️"; 
-
-        StateHasChanged(); 
-    }
-}
+<div class="coupon-box">
+    <span>🏷️</span>
+    <input type="text"
+           id="couponBox"
+           value="@coupon"
+           readonly="@processing"
+           @oninput="OnInputChanged"
+           onpaste="handlePaste(event)"
+           onkeypress="validateInput(event)"
+           placeholder="Coupon (Optional)" />
+    <span @attributes="GetClearButtonAttributes()"
+          @onclick="ClearCoupon"
+          title="Clear">❌</span>
+    <span @attributes="GetApplyButtonAttributes()"
+          @onclick="ValidateCouponAsync"
+          title="Apply">@actionLabel</span>
+</div>
 
 <script>
     function validateInput(event) {
@@ -63,94 +76,81 @@
         const startPos = input.selectionStart;
         const endPos = input.selectionEnd;
 
-        input.value = input.value.substring(0, startPos) 
+        input.value = input.value.substring(0, startPos)
             + textToInsert + input.value.substring(endPos);
 
         input.selectionStart = input.selectionEnd = startPos + textToInsert.length;
     }
 </script>
 
-<div class="coupon-input-container">
-    <div class="input-wrapper">
-        <span class="coupon-label">🏷️</span>
-        <input type="text"
-               id="couponBox"
-               value="@coupon"
-               @oninput="OnInputChanged"
-               onpaste="handlePaste(event)"
-               onkeypress="validateInput(event)"
-               placeholder="Coupon Goes Here"
-               readonly="@processing" />
-        <button @onclick="ClearCoupon"
-                title="Clear"
-                disabled="@IsInputEmpty"
-                class="clear-button">
-            ❌
-        </button>
-        <button @onclick="ValidateCouponAsync"
-                title="Apply"
-                disabled="@IsInputEmpty"
-                class="validate-button">
-            @actionLabel
-        </button>
-    </div>
-</div>
+@code {
+    private string coupon { get; set; } = "";
+    private string actionLabel { get; set; } = "➡️";
+    private bool processing { get; set; } = false;
+    private bool buttonWasClicked { get; set; } = false; 
 
-<style>
-    .coupon-input-container {
-        display: flex;
-        justify-content: center;
+    private async Task ValidateCouponAsync()
+    {
+        if (string.IsNullOrWhiteSpace(coupon) || buttonWasClicked)
+            return;
+
+        buttonWasClicked = true;
+        processing = true;
+        actionLabel = "⏳";
+
+        await Task.Delay(5000);
+
+        actionLabel = new Random().Next(2) == 0 ? "✅" : "🚫";
+
+        processing = false;
     }
 
-    .input-wrapper {
-        display: flex;
-        align-items: center;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        margin: 0 30px;
+    private bool IsInputEmpty => string.IsNullOrWhiteSpace(coupon);
+
+    private void ClearCoupon()
+    {
+        if (processing)
+            return;
+
+        coupon = "";
+        actionLabel = "➡️";
+        processing = false;
+        buttonWasClicked = false; 
     }
 
-    .coupon-label {
-        margin: 0;
-        font-size: 20px;
+    private void OnInputChanged(ChangeEventArgs e)
+    {
+        coupon = e.Value?.ToString() ?? "";
+
+        if (!processing)
+            actionLabel = "➡️";
+
+        StateHasChanged();
     }
 
-    input {
-        flex-grow: 1;
-        border: none;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
+    @code {
+        private Dictionary<string, object> GetClearButtonAttributes()
+        {
+            var attributes = new Dictionary<string, object>();
 
-        input:focus {
-            outline: none;
+            if (IsInputEmpty || processing)
+                attributes.Add("class", "coupon-button disabled");
+            else
+                attributes.Add("class", "coupon-button");
+
+            return attributes;
         }
 
-    .clear-button, .validate-button {
-        background: none;
-        border: none; 
-        cursor: pointer;
-        margin: 0; 
-        padding: 0;
-        font-size: 20px; 
-        cursor: pointer;
-    }
+        private Dictionary<string, object> GetApplyButtonAttributes()
+        {
+            var attributes = new Dictionary<string, object>();
 
-    button * {
-        color: inherit;
-    }
+            if (IsInputEmpty || buttonWasClicked)
+                attributes.Add("class", "coupon-button disabled");
+            else
+                attributes.Add("class", "coupon-button");
 
-    button:disabled, button:disabled:hover {
-        color: inherit;
-        background-color: #f0f0f0; 
-        cursor: default; 
+            return attributes;
+        }
     }
-
-    .clear-button:hover, .validate-button:hover {
-        background-color: transparent; 
-    }
-
-    .clear-button:disabled:hover, .validate-button:disabled:hover {
-        background-color: #f0f0f0;
-    }
-</style>
+}

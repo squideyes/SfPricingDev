@@ -3,11 +3,11 @@
 // of the MIT License (https://opensource.org/licenses/MIT)
 // ********************************************************
 
-using Round3.Models;
-using static Round3.Models.Glyph;
-using static Round3.Models.Plan;
+using SfPricingDev.Models;
+using static SfPricingDev.Models.Glyph;
+using static SfPricingDev.Models.Plan;
 
-namespace Round3.Helpers;
+namespace SfPricingDev.Helpers;
 
 public static class BenefitsExtenders
 {

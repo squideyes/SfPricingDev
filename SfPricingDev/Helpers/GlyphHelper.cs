@@ -15,8 +15,6 @@ public static class GlyphHelper
         {
             Glyph.Yes => "✅",
             Glyph.No => "❌",
-            Glyph.Heart => "❤️ ",
-            Glyph.Target => "🎯",
             _ => throw new ArgumentOutOfRangeException(nameof(glyph))
         };
     }

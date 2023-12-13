@@ -1,78 +1,184 @@
 ﻿@using SfPricingDev.Helpers;
 @using Syncfusion
+@using System.Text
+@using SfPricingDev.Models
 @using Syncfusion.Blazor.Buttons
-@using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Lists;
 @using Syncfusion.Blazor.Popups;
 @using Syncfusion.Blazor.Inputs
-@using SfPricingDev.Models
 @using B = Syncfusion.Blazor.Buttons;
 
-<link rel="stylesheet" href="PricingWidget.css" />
+<style>
+    .plan-panel {
+        font-family: Arial, sans-serif;
+        width: 300px;
+        padding: 25px;
+        border-radius: 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-<div class="@GetPlanClasses()" style="@GetPlanBorderStyle()">
+    .benefits-list {
+        align-items: flex-start;
+        list-style-type: none;
+        padding-left: 0;
+        display: inline-block;
+        text-align: left;
+        max-width: 100%;
+    }
+
+    .benefit,
+    .benefit * {
+        font-size: 20px;
+        text-align: left;
+    }
+
+    .best-value {
+        border-color: #007bff;
+    }
+
+    .price {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-top: -6px;
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    .e-tooltip-wrap.e-popup {
+        background-color: #fff;
+        border: 2px solid #000;
+        background: black;
+    }
+
+    .e-tooltip-wrap .e-tip-content {
+        color: white;
+        text-align: center;
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    .e-tooltip-wrap .e-arrow-tip-inner.e-tip-bottom {
+        color: black;
+    }
+
+    .e-tooltip-wrap .e-arrow-tip-outer.e-tip-bottom {
+        border-left: 12px solid transparent;
+        border-right: 14px solid transparent;
+        border-top: 12px solid black;
+    }
+
+    .e-tooltip-wrap {
+        max-width: 280px;
+    }
+
+    .flex-plan {
+        border: 5px solid #ccc;
+        background-color: #f3faf2;
+    }
+
+    .non-flex-plan {
+        border: 2px solid #ccc;
+    }
+
+    .pay-yearly-and-save {
+        font-size: 14px;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .plan-name {
+        font-size: 50px;
+        font-weight: bold;
+    }
+
+    .slider-caption {
+        margin-top: -46px;
+        font-size: 14px;
+        text-align: center;
+    }
+</style>
+
+<div class="@GetPlanPanelClasses()">
     <SfTooltip Content="@Plan.ToTagLine()">
-        <h1><b>@Plan</b></h1>
+        <span class="plan-name">@Plan</span>
     </SfTooltip>
 
     <div class="price">
-        @if (Plan == Plan.Flex)
-        {
-            <span>$@price / @MonthOrYear()</span>
-        }
-        else
-        {
-            <span>$@price / month</span>
-        }
+        <span>@GetPriceAndBilling()</span>
     </div>
 
     @if (Plan == Plan.Flex)
     {
-        <SfSlider TValue="int" Width="200" Min="1" Max="25"
-                  Value="@quantity" CssClass="slider-margin-top">
-            <SliderEvents TValue="int" OnChange="OnChange"></SliderEvents>
+        <SfSlider TValue="int"
+                  Width="200"
+                  Min="1"
+                  Max="25"
+                  Value="@quantity">
+            <SliderEvents TValue="int"
+                          OnChange="OnChange" />
         </SfSlider>
         <p class="slider-caption">slide to select lots traded</p>
     }
 
-    <div class="benefits-container">
+    <ul class="benefits-list">
         @foreach (var benefit in benefits!)
         {
-            <div class="benefit">
+            <li class="benefit">
                 <SfTooltip Content="@benefit.Tooltip">
                     @benefit.GetFragment()
                 </SfTooltip>
-            </div>
+            </li>
         }
-        @if (Plan == Plan.Flex)
-        {
-            <br />
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    </ul>
+
+    @if (Plan == Plan.Flex)
+    {
+        <div style="margin: -6px 5px 0px 5px;">
+            <SfTooltip Content="Click ➡️ to validate<br/>and apply the coupon.">
                 <CouponBox />
-                <div style="margin-top: 4px; display: flex; align-items: center; justify-content: center;">
-                    Pay Yearly & Save 20%&nbsp;
-                    <SfSwitch @bind-Checked="prePayAndSave"
-                              ValueChange="OnChange" TChecked="bool?" />
-                </div>
-            </div>
-        }
-    </div>
-    <br />
-    <button>Choose Plan</button>
+            </SfTooltip>
+        </div>
+
+        <div class="pay-yearly-and-save">
+            Pay Yearly; Save 20%&nbsp;
+            <SfSwitch CssClass="e-small"
+                      @bind-Checked="prePayAndSave"
+                      ValueChange="OnChange"
+                      TChecked="bool?" />
+        </div>
+
+        <br />
+    }
+
+    <button>Subscribe</button>
 </div>
 
 @code {
     bool? prePayAndSave = false;
     int quantity = 1;
     double price;
-    bool showSlider;
     List<Benefit>? benefits;
 
     protected override void OnInitialized()
     {
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
-
-        showSlider = Plan == Plan.Flex;
 
         UpdatePrice();
     }
@@ -80,30 +186,22 @@
     [Parameter]
     public Plan Plan { get; set; } = Plan.Free;
 
-    [Parameter]
-    public string? TagLine { get; set; }
+    private string GetPlanPanelClasses()
+    {
+        var classes = "plan-panel";
+
+        if (Plan == Plan.Flex)
+            classes += " flex-plan";
+        else
+            classes += " non-flex-plan";
+
+        return classes;
+    }
 
     void UpdatePrice()
     {
         price = Pricing.GetPrice(Plan, quantity,
             prePayAndSave == true ? Billing.Year : Billing.Month);
-    }
-
-    private string GetPlanBorderStyle()
-    {
-        return Plan == Plan.Flex
-            ? "border: 5px solid #ccc;"
-            : "border: 2px solid #ccc;";
-    }
-
-    private string GetPlanClasses()
-    {
-        var classes = "plan";
-
-        if (Plan == Plan.Flex)
-            classes += " preferred-plan";
-
-        return classes;
     }
 
     public void OnChange(SliderChangeEventArgs<int> args)
@@ -115,12 +213,24 @@
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
     }
 
+    private string GetPriceAndBilling()
+    {
+        var sb = new StringBuilder();
+
+        sb.Append($"${price} / ");
+
+        if (Plan == Plan.Flex)
+            sb.Append(prePayAndSave == true ? "year" : "month");
+        else
+            sb.Append("month");
+
+        return sb.ToString();
+    }
+
     private void OnChange(B.ChangeEventArgs<bool?> args)
     {
         UpdatePrice();
 
         benefits = Plan.ToBenefits(quantity, prePayAndSave == true);
     }
-
-    private string MonthOrYear() => prePayAndSave == true ? "year" : "month";
 }

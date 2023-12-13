@@ -3,7 +3,7 @@
 // of the MIT License (https://opensource.org/licenses/MIT)
 // ********************************************************
 
-namespace SfPricingDev;
+namespace SfPricingDev.Models;
 
 public enum Billing
 {
