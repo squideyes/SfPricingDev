@@ -9,8 +9,9 @@ using SfPricingDev.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-SyncfusionLicenseProvider.RegisterLicense(
-    "MjkxODk1OEAzMjMzMmUzMDJlMzBtVFE2Z3h2VXIySWN2Q3pDVVdmQ2tpUHV5QzZFSXhTd1lJbzA0a2lnMDVVPQ==");
+var licenceKey = builder.Configuration["Syncfusion:LicenseKey"];
+
+SyncfusionLicenseProvider.RegisterLicense(licenceKey);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
