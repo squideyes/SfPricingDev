@@ -15,9 +15,9 @@ public static class BenefitsExtenders
     {
         return plan switch
         {
-            Free => "&quot;Kick The Tires&quot; (prove to yourself that SquidFolio works).",
-            Lite => "Up your trading game while putting minimal capital at risk.",
-            Flex => "Trade multiple EA pools to improve your profit potential.",
+            Free => "&quot;Kick The Tires&quot;<br/>(prove to yourself that<br/>SquidFolio works)",
+            Lite => "Up your trading game while putting minimal capital at risk",
+            Flex => "Maximize your profit potential",
             _ => throw new ArgumentOutOfRangeException(nameof(plan))
         };
     }
